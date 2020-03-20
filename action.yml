@@ -1,0 +1,20 @@
+name: scan-commit-for-vulnerable-dependencies
+description: Scan a commit to check if it adds a vulnerability to the dependencies of a repo
+author: pedrolacerda
+branding:
+  icon: 'package'  
+  color: 'green'
+inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: 'GitHub Token for API authentication'
+outputs:
+  severity:
+    description: 'Severity of the vulnerability'
+  patchedVersion:
+    description: 'First patched version'
+  vulnerableVersion:
+    description: 'Vulnerable version range'
+runs:
+  using: 'node12'
+  main:  'src/index.js'
