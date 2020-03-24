@@ -1,4 +1,4 @@
-name: scan-commit-for-vulnerable-dependencies
+name: Scan a PR for vulnerable dependencies
 description: Scan a commit to check if it adds a vulnerability to the dependencies of a repo
 author: pedrolacerda
 branding:
