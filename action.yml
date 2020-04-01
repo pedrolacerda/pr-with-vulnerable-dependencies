@@ -1,37 +1,20 @@
-# Scan a PR for vulnerable dependencies
-
-Scan commits in a PR to check if it adds a vulnerability to the dependencies of a repo
-
-## Input
-
-### `GITHUB_TOKEN`
-
-Use: `${{ secrets.GITHUB_TOKEN }}`
-
-You can see an example on how to use it in workflow in the [example-workflow.yml](https://github.com/pedrolacerda/pr-with-vulnerable-dependencies/blob/master/.github/workflows/example-workflow.yml)
-
-### 🚨 Important
-
-Works only when a workflow is triggered by a Pull Request
-
-### Usage
-
-``` yml
-name: Java CI
-
-on: [pull_request]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@master
-
-    - name: Check vulnerabilities
-      uses: pedrolacerda/pr-with-vulnerable-dependencies@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+name: Scan a PR for vulnerable dependencies
+description: Scan a PR to check if any of its commits add vulnerable dependencies to the repo
+author: pedrolacerda
+branding:
+  icon: 'package'  
+  color: 'green'
+inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: 'GitHub Token for API authentication'
+outputs:
+  severity:
+    description: 'Severity of the vulnerability'
+  patchedVersion:
+    description: 'First patched version'
+  vulnerableVersion:
+    description: 'Vulnerable version range'
+runs:
+  using: 'node12'
+  main:  'src/index.js'
