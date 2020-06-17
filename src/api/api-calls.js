@@ -92,7 +92,7 @@ module.exports = {
             }
         })
 
-        console.log(JSON.stringify(filesDiff))
+        console.log('in function: '+JSON.stringify(filesDiff, null, 2))
 
         return filesDiff
     }
