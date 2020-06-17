@@ -98,7 +98,7 @@ try {
                         });
 
                         //Get the diff of two commits (?)
-                        let filesDiff = await apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, github.base_ref, github.head_ref)
+                        let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, github.base_ref, github.head_ref)
                         .catch(error => {
                             core.setFailed(error.message)
                             console.log(error)
