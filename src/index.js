@@ -34,9 +34,9 @@ const languagesEcosystems = [
 try {
     let context = github.context
 
-    console.log(JSON.stringify(JSON.stringify(context.payload, null, 4)));
-    console.log("BASE: "+context.payload.base)
-    console.log("HEAD: "+context.payload.head)
+    // console.log(JSON.stringify(JSON.stringify(context.payload, null, 4)));
+    console.log("BASE: "+context.payload.pull_request.base.ref)
+    console.log("HEAD: "+context.payload.pull_request.base.ref)
 
     if(context.eventName == `pull_request`){
         let languagesEcosystemsInPR
