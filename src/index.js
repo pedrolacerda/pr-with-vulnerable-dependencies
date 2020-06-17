@@ -35,7 +35,8 @@ try {
     let context = github.context
 
     console.log(JSON.stringify(JSON.stringify(context.payload, undefined, 2)));
-
+    console.log("BASE: "+context.payload.base)
+    console.log("HEAD: "+context.payload.head)
 
     if(context.eventName == `pull_request`){
         let languagesEcosystemsInPR
