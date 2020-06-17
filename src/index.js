@@ -107,7 +107,7 @@ try {
                             console.log(error)
                         });
 
-                        console.log("Files Diff:\n"+JSON.stringify(filesDiff))
+                        console.log("Files Diff:\n"+JSON.stringify(filesDiff, null, 2))
                     }
                }) 
             } else {
