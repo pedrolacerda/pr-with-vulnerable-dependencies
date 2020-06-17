@@ -3,10 +3,10 @@ const core = require('@actions/core');
 
 module.exports = {
     /*
-    * Get a specific vulerability
-    * @params package(String):   full URI of the package 
-    * @params ecosystem(String): ecosystem from the list [RUBYGEMS,NPM,PIP,MAVEN,NUGET,COMPOSER]
-    */
+     * Get a specific vulerability
+     * @params package(String):   full URI of the package 
+     * @params ecosystem(String): ecosystem from the list [RUBYGEMS,NPM,PIP,MAVEN,NUGET,COMPOSER]
+     */
     getVulnerability: async function (package, ecosystem) {
         let octokit = new github.GitHub(core.getInput('GITHUB_TOKEN'));
      
@@ -29,8 +29,8 @@ module.exports = {
         });
     },
     /*
-    * Get all files from a PR
-    */
+     * Get all files from a PR
+     */
     getPrFiles: async function (prNumber, owner, repo) {
         let octokit = new github.GitHub(core.getInput('GITHUB_TOKEN'));
     
@@ -44,8 +44,8 @@ module.exports = {
     },
 
     /*
-    * Get a list of languages used on the repo
-    */
+     * Get a list of languages used on the repo
+     */
     getLanguageList: async function (owner, repo) {
         let octokit = new github.GitHub(core.getInput('GITHUB_TOKEN'));
     
@@ -73,6 +73,27 @@ module.exports = {
         })
 
         return fileInCommity
-    }
+    },
 
+    /*
+     * Compare the last change of a file with the last commit of the same file in the default branch (if any)
+     */
+    compareCommitWithMain: async function(owner, repo, base, head){
+
+        let octokit = new github.GitHub(core.getInput('GITHUB_TOKEN'));
+        
+        let {data: filesDiff } =  await octokit.repos.compareCommits({
+            owner: owner,
+            repo: repo,
+            base: base,
+            head: head,
+            mediaType: {
+                format: 'diff'
+            }
+        })
+
+        console.log(JSON.stringify(filesDiff))
+
+        return filesDiff
+    }
 }
