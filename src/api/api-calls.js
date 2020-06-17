@@ -85,8 +85,10 @@ module.exports = {
         let {data: filesDiff } =  await octokit.repos.compareCommits({
             owner: owner,
             repo: repo,
-            base: base,
-            head: head,
+            // base: base,
+            // head: head,
+            base: 'master',
+            head: 'validate-action',
             mediaType: {
                 format: 'diff'
             }

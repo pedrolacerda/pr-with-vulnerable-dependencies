@@ -34,7 +34,7 @@ const languagesEcosystems = [
 try {
     let context = github.context
 
-    console.log(JSON.stringify(JSON.stringify(context.payload, null, 2)));
+    console.log(JSON.stringify(JSON.stringify(context.payload, undefined, 2)));
 
 
     if(context.eventName == `pull_request`){
@@ -107,7 +107,7 @@ try {
                             console.log(error)
                         });
 
-                        console.log("Files Diff:\n"+JSON.stringify(filesDiff, null, 2))
+                        // console.log("Files Diff:\n"+JSON.stringify(filesDiff, null, 2))
                     }
                }) 
             } else {
