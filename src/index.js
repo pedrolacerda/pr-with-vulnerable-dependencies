@@ -34,6 +34,9 @@ const languagesEcosystems = [
 try {
     let context = github.context
 
+    console.log(JSON.stringify('Context Payload:\n'+JSON.stringify(context.payload)));
+
+
     if(context.eventName == `pull_request`){
         let languagesEcosystemsInPR
 
@@ -96,8 +99,6 @@ try {
                             core.setFailed(error.message)
                             console.log(error)
                         });
-
-                        console.log(JSON.stringify('Context Payload:\n'+JSON.stringify(context.payload)));
 
                         //Get the diff of two commits (?)
                         let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.base_ref, context.payload.head_ref)
