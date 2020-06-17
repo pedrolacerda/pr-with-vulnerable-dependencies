@@ -97,6 +97,8 @@ try {
                             console.log(error)
                         });
 
+                        console.log(JSON.stringify('Context Payload:\n'+JSON.stringify(context.payload)));
+
                         //Get the diff of two commits (?)
                         let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.base_ref, context.payload.head_ref)
                         .catch(error => {
