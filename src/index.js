@@ -34,7 +34,7 @@ const languagesEcosystems = [
 try {
     let context = github.context
 
-    console.log(JSON.stringify('Context Payload:\n'+JSON.stringify(context.payload)));
+    console.log(JSON.stringify('Context Payload:\n'+JSON.stringify(context.payload, null, 2)));
 
 
     if(context.eventName == `pull_request`){
