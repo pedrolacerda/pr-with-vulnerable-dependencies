@@ -92,8 +92,6 @@ module.exports = {
             }
         })
 
-        console.log(JSON.stringify(filesDiff, null, 2))
-
         return filesDiff
     }
 }
