@@ -4,6 +4,19 @@ const DOMParser = require('xmldom').DOMParser;
 const parser = require("git-diff-parser");
 const apiCalls = require('../api/api-calls.js')
 
+// Better viewing of linenumbers
+const pad = function(input, toLeft) {
+    if (input === null) { input = "-"; }
+    if (toLeft === null) { toLeft = false; }
+    let result = `${input}`;
+  
+    while (result.length < 5) {
+      result = toLeft ? `${result} ` : ` ${result}`;
+    }
+  
+    return result;
+  };
+
 module.exports = {
     getVulnerabilities: async function (dependencyFile, ecosystem) {
         
@@ -13,7 +26,7 @@ module.exports = {
         let domParser = new DOMParser()
 
         const diff = parser(dependencyFile);
-        console.log
+        console.log(JSON.stringify(diff,null,2))
 
         //Checks if there's a diff for pom.xml files
         for(line in lines) {
