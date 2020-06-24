@@ -4,81 +4,40 @@ const DOMParser = require('xmldom').DOMParser;
 const parser = require("git-diff-parser");
 const apiCalls = require('../api/api-calls.js')
 
-// Better viewing of linenumbers
-const pad = function(input, toLeft) {
-    if (input === null) { input = "-"; }
-    if (toLeft === null) { toLeft = false; }
-    let result = `${input}`;
-  
-    while (result.length < 5) {
-      result = toLeft ? `${result} ` : ` ${result}`;
-    }
-  
-    return result;
-  };
-
 module.exports = {
     getVulnerabilities: async function (dependencyFile, ecosystem) {
         
-        //Breaks diff into lines for easier manipulation
-        var lines = dependencyFile.split('\n');
-        var listOfChangedDependencies = [];
-        let domParser = new DOMParser()
+        var listOfChangedDependencies = []
 
-        const diff = parser(dependencyFile);
-        console.log(JSON.stringify(diff,null,2))
+        const diff = parser(dependencyFile)
+        var domParser = new DOMParser()
+        
+        var filesChanged = diff.commits[0].files
+        
+        filesChanged.forEach(function(file, idx) {
+            if(file.name.endsWith('pom.xml')){
+                //Iterate over each line changed to get library changed
+                let lines = file.lines
+                for(line in lines) {
+                    console.log(lines[line])
 
-        //Checks if there's a diff for pom.xml files
-        for(line in lines) {
-            if(lines[line].startsWith('+++ b/') && lines[line].endsWith('pom.xml')) {
-                console.log('Line['+line+'] begins the dependencies changes')
-                console.log(lines[line])
-                //moves to the line with diff
-                line = parseInt(line)
-                line += 2
-                
-                console.log('starting at line ['+line+']')
+                    //If the line doesn't have a dependency version variable tag
+                    //And the line has a dependency tag, then it's a full dependency block added
+                    if(lines[line].text.search('.version') == -1 && lines[line].text == '<dependency>'){
+                        //console.log('This is about a full dependency block that was changed')
+                        // console.log(lines[line].text.search('.version'))
+                        // console.log(lines[line].text.toString().trim())
+                        let dependencyXML = lines[line].text
+                        let xmlElement = domParser.parseFromString(lines[line].text.toString().trim(), 'text/xml')
+                        console.log(xmlElement)
 
-                //If the line doesn't start with 'diff' (which is the begining of a new file diff)
-                //And the line doesn't start with '@@' (which is the diff for a new block of lines)
-                //And hasn't reached the EOF (-1 line that will always be 'undefined')
-                //... begin to parse
-                while(!lines[line].trim().startsWith('diff') 
-                        && !lines[line].trim().startsWith('@@') 
-                        && line < lines.length-1){
-                //If the change is NOT on the dependency version variable
-                    if(lines[line].search('.version') == -1){
-                        console.log('Full dependency block')
-
-                        //If that's the line changed, bypass it
-                        console.log('Primeiro caracter['+line+']: '+lines[line].trim()[0])
-                        if(lines[line].trim()[0] == '-'){
-                            console.log('Linha que foi removida: ['+i+']')
-                            line++;
-                        } else if(lines[line].trim()[0] == '+'){
-                            console.log('Linha que foi adicionada: ['+i+']')
-                            lines[line] = lines[line].replace('+', '')
-                            // let xmlDoc = parser.parseFromString(lines[line], 'text/xml')
-                            // console.log(xmlDoc) 
-                        }
-                        
-
-                    //If the change is directly on the dependency declaration
-                    } else {
-                        console.log('Just dependency version variable['+i+']')
-                        //If that's the line being added (thus, the dependency)
-                        if(lines[line][0] == '+'){
-                            console.log('Dependency added: '+ lines[line])
-                            lines[line] = lines[line].replace('+', '')
-                            let xmlDoc = parser.parseFromString(lines[line], 'text/xml')
-                            console.log(xmlDoc) 
-                        }
+                    //If there's a dependency version variable tag and the line was added
+                    } else if(line.type == 'added'){
+                        console.log('Dependency variable added: '+line.text.toString().trim())
                     }
-                    line++;
                 }
             }
-        } //termina aqui
-
+        })//ends here
     }
 }
 
