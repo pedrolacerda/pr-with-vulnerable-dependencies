@@ -36,7 +36,7 @@ try {
 
     // console.log(JSON.stringify(JSON.stringify(context.payload, null, 4)));
     console.log("BASE: "+context.payload.pull_request.base.ref)
-    console.log("HEAD: "+context.payload.pull_request.base.ref)
+    console.log("HEAD: "+context.payload.pull_request.head.ref)
 
     if(context.eventName == `pull_request`){
         let languagesEcosystemsInPR
@@ -102,7 +102,7 @@ try {
                         });
 
                         //Get the diff of two commits (?)
-                        let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.base, context.payload.head)
+                        let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.pull_request.base.ref, context.payload.pull_request.head.ref)
                         .catch(error => {
                             core.setFailed(error.message)
                             console.log(error)
