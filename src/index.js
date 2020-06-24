@@ -90,25 +90,16 @@ try {
                                 core.setFailed("The ecosystem is not supported yet")
                           }
 
-                        //Get file content to scan each vulnerability
-                        apiCalls.getFileInCommit(context.payload.repository.owner.login, context.payload.repository.name, file.filename, context.payload.pull_request.head.ref)
-                        .then( async fileChanged => {
-
+                        //Get the diff of the PR and checks if they change any depencency
+                        apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.pull_request.base.ref, context.payload.pull_request.head.ref)
+                        .then( async filesDiff => {
                             await dependencyFileParser.getVulnerabilities(fileChanged,ecosystem)
-
                         }).catch(error => {
                             core.setFailed(error.message)
                             console.log(error)
                         });
 
-                        //Get the diff of two commits (?)
-                        let filesDiff = apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.pull_request.base.ref, context.payload.pull_request.head.ref)
-                        .catch(error => {
-                            core.setFailed(error.message)
-                            console.log(error)
-                        });
-
-                        console.log("Files Diff:\n"+JSON.stringify(filesDiff, null, 2))
+                        
                     }
                }) 
             } else {
@@ -127,6 +118,3 @@ try {
 } catch (error) {
   core.setFailed(error.message);
 }
-
-
-/* ;asjd;klf */
