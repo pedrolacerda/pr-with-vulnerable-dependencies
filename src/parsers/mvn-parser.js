@@ -19,17 +19,17 @@ module.exports = {
                 //Iterate over each line changed to get library changed
                 let lines = file.lines
                 for(line in lines) {
-                    console.log(lines[line])
+                    // console.log(lines[line])
 
                     //If the line doesn't have a dependency version variable tag
                     //And the line has a dependency tag, then it's a full dependency block added
                     if(lines[line].text.search('.version') == -1 && lines[line].text == '<dependency>'){
-                        //console.log('This is about a full dependency block that was changed')
+                        console.log('This is about a full dependency block that was changed')
                         // console.log(lines[line].text.search('.version'))
                         // console.log(lines[line].text.toString().trim())
                         let dependencyXML = lines[line].text
                         let xmlElement = domParser.parseFromString(lines[line].text.toString().trim(), 'text/xml')
-                        console.log(xmlElement)
+                        // console.log(xmlElement)
 
                     //If there's a dependency version variable tag and the line was added
                     } else if(line.type == 'added'){
