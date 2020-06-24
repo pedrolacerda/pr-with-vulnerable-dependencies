@@ -34,7 +34,7 @@ const languagesEcosystems = [
 try {
     let context = github.context
 
-    console.log(JSON.stringify(JSON.stringify(context.payload, null, 4)));
+    console.log(JSON.stringify(JSON.stringify(context, null, 4)));
     console.log("BASE: "+context.payload.pull_request.base.ref)
     console.log("HEAD: "+context.payload.pull_request.head.ref)
 
