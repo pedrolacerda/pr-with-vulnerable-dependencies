@@ -93,13 +93,13 @@ try {
                         //Get the diff of the PR and checks if they change any depencency
                         apiCalls.compareCommitWithMain(context.payload.repository.owner.login, context.payload.repository.name, context.payload.pull_request.base.ref, context.payload.pull_request.head.ref)
                         .then( async filesDiff => {
-                            await dependencyFileParser.getVulnerabilities(fileChanged,ecosystem)
+                            await dependencyFileParser.getVulnerabilities(filesDiff,ecosystem)
                         }).catch(error => {
                             core.setFailed(error.message)
                             console.log(error)
                         });
 
-                        
+
                     }
                }) 
             } else {
